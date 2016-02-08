@@ -1,7 +1,7 @@
 OASISFormat: 0.4
 Name:        Example
 Version:     1.0
-Synopsis:    A short example of an HTTP server that gets bitcoin current
+Synopsis:    A short example of an HTTP request that gets bitcoin current
   price and prints it to console.
 Authors:     Gina Maini
 License:     GPL-3
