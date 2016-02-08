@@ -10,4 +10,6 @@ Executable example
   Path:       .
   BuildTools: ocamlbuild
   MainIs:     main.ml
+  BuildDepends:
+        lwt, cohttp, cohttp.lwt
   
