@@ -4,17 +4,12 @@ Bread and butter OCaml program that makes an HTTP request and prints the respons
 To run, do:
 `oasis setup`
 
-then
-`ocaml setup.ml -configure`
-
-and then
-`ocaml setup.ml -build`
-
-if you `ls` in that directory you should see some new files, 
-the most important being `main.byte`. That's your bytecode executable!
+then:
+`make`
 
 Now do
-`./main.byte`
+`./main.native`
+
 and you should see an HTTP Response headers and body printed out in your console.
 
 # See Also
