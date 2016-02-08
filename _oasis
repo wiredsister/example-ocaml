@@ -5,11 +5,14 @@ Synopsis:    A short example of an HTTP server that gets bitcoin current
   price and prints it to console.
 Authors:     Gina Maini
 License:     GPL-3
+Plugins:      META (0.4), DevFiles (0.4)
+AlphaFeatures: ocamlbuild_more_args
+
 
 Executable example
   Path:       .
   BuildTools: ocamlbuild
   MainIs:     main.ml
-  BuildDepends:
-        lwt, cohttp, cohttp.lwt
+  CompiledObject: native
+  BuildDepends: lwt, cohttp, cohttp.lwt, yojson
   
