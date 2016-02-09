@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <!--
+      The MIT License (MIT)
+
+      Copyright (c) 2015 Tom Panning
+
+      Permission is hereby granted, free of charge, to any person obtaining a copy
+      of this software and associated documentation files (the "Software"), to deal
+      in the Software without restriction, including without limitation the rights
+      to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+      copies of the Software, and to permit persons to whom the Software is
+      furnished to do so, subject to the following conditions:
+
+      The above copyright notice and this permission notice shall be included in
+      all copies or substantial portions of the Software.
+
+      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+      IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+      FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+      AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+      LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+      THE SOFTWARE.
+    -->
+  <head>
+    <meta charset="utf-8">
+
+    <title>OCaml Presentation Mon Jan 18, 2016</title>
+
+    <meta name="author" content="Edgar Aroutiounian">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport"
+	  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet"
+	  href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.min.css">
+    <link rel="stylesheet"
+	  href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/black.css"
+	  id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet"
+	  href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ?  'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css' : 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+	<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/html5shiv.js"></script>
+	<![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+	<section>
+	  <p> OCaml Meetup, San Francisco</p>
+	  <p> A Survey of OCaml for new and experienced
+	    programmers </p>
+	  <img height="30%" width="40%" style="margin: 1rem auto 0;
+	  display:block;" src="meetup.jpg"></img>
+	  <p>
+	    <small>By <a href="http://twitter.com/edgararout">@edgararout</a></small>
+	  </p>
+	</section>
+
+        <section style="font-size:1.4rem;">
+	  <h1> About Me</h1>
+	  <p> My name is Edgar Aroutiounian, I'm a programmer at
+	  MixRank </p>
+	  <ul>
+	    <li> Have been actually paid for functional programming. </li>
+	    <li>First introduced to OCaml in compiler's class at
+	      Columbia University, but ignored it after that.
+	    </li>
+	    <li> Found it again when I started looking for a new
+	      language that was fast, type safe, not verbose, not
+	      Haskell.
+	    </li>
+	    <li>Now an OCaml fantatic, first non trivial OCaml
+	      project was this space invaders
+	      game 
+	    </li>
+	    <img height="20%" width="30%" style="margin: 1rem auto 0; display:block;" src="space_invader.gif"></img>
+	  </ul>
+        </section>
+
+        <section>
+          <h2> A Simple HTTP Get Request </h2>
+	  <p>Clone the repository: <a href="https://github.com/wiredsister/example-ocaml">https://github.com/wiredsister/example-ocaml</a></p>
+        </section>
+
+	<section>
+	  <p> Open the _oasis file </>
+	   <pre>
+	    <code class="ocaml">
+OASISFormat: 0.4
+Name:        Example
+Version:     1.0
+Synopsis:    A short example of an HTTP request that gets bitcoin
+current price and prints it to console.
+Authors:     Gina Maini
+License:     GPL-3
+Plugins:      META (0.4), DevFiles (0.4)
+AlphaFeatures: ocamlbuild_more_args
+     
+Executable example
+   Path:       .
+   BuildTools: ocamlbuild
+   MainIs:     main.ml
+   CompiledObject: native
+   BuildDepends: lwt, cohttp, cohttp.lwt, yojson
+</code></pre>
+	</section>
+	
+        <section>
+	  <p>The main.ml file</p>
+	  <pre>
+	    <code class="ocaml">
+open Lwt.Infix
+open Cohttp_lwt_unix
+    
+let request () =
+  Client.get (Uri.of_string "http://www.bitstamp.net/api/ticker/")
+    >>= fun (resp, body) ->
+      body |> Cohttp_lwt_body.to_string >|= fun as_str ->
+      Yojson.Basic.from_string as_str
+	|> Yojson.Basic.pretty_to_string
+  	|> Lwt_io.printl
+	
+let () =
+  Lwt_main.run (request ()) |> Lwt.ignore_result
+            </code>
+          </pre>
+</section>
+
+	<section>
+	  <p> What is Lwt? </p>
+	  <ul>
+	    <li> Lwt is a cooperative threading library in OCaml. Cooperative
+	      threads (A.K.A. non-premtive threads) typically yield control to
+	      another thread before they finish.  People use Lwt for I/O, events,
+	      and ease of use.</li>
+	    <li>See also, async. </li>
+	  </ul>
+	</section>
+
+	<section>
+	  <p> What is happening in <code>Lwt_main.run</code>?</p>
+	  <ul>
+	    <li><code class="ocaml">Lwt_main.run : 'a Lwt.t -> 'a</code></li>
+	    <li> run t calls the Lwt scheduler repeatedly until t terminates,
+	      then returns the value returned by the thread.  If t fails with
+	      an exception the exception is raised.</li>
+	  </ul>
+	</section>
+
+	<section>
+	  <p> What is happening in code <code class="ocaml"> >>= </code> ?</p>
+	  <ul>
+	    <li>Bind, or as some affectionally call shove: code
+	      class="ocaml"> 'a Lwt.t -> (a' -> b'
+	      Lwt.t) -> 'b Lwt.t </code> What we're doing here is shoving the thing inside
+	      the monad on the left of the <code class="ocaml">
+	      >>= </code> into the right side of the <code class="ocaml"> >>= </code> then
+	      wrapping that result in a monad.  Another way to think about this
+	      might be: <blockquote>"I don't know when the left side will happen, but when it
+	      does, do this with it."</blockquote></li>
+	  </ul>
+	</section>
+
+	<section>
+	  <p>Out of time, any questions?</p>
+	</section>
+      </div>
+    </div>
+
+    <script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+    <script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.min.js"></script>
+
+    <script>
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      transition: 'slide', // none/fade/slide/convex/concave/zoom
+      // Optional reveal.js plugins
+      dependencies: [
+      { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/zoom-js/zoom.js', async: true },
+      { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true }
+      ]
+      });
+    </script>
+  </body>
+</html>
