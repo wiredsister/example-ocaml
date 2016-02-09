@@ -10,7 +10,7 @@ then:
 Now do
 `./main.native`
 
-and you should see an HTTP Response headers and body printed out in your console.
+and you should see a pretty-printed JSON response in your console.
 
 # See Also
 
