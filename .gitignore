@@ -2,3 +2,12 @@ main.cmi
 main.cmx
 main.o
 example
+Makefile
+_build
+_tags
+main.native
+myocamlbuild.ml
+setup.data
+setup.log
+setup.ml
+configure
