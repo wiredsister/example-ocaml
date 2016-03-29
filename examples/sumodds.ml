@@ -1,4 +1,5 @@
 (**
+   SUMMING ODDS IN A LIST
    EXAMPLES FOR THE SILICON VALLEY OCaml MEETUP
    DATED: March 29, 2016
    AUTHOR: @wiredsister, @fxfactorial
