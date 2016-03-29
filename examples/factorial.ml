@@ -50,8 +50,7 @@ let rec ntr_factorial = function
   to be iterative) you'll notice they have similar behaviors.
   Above 30 you'll see that it will give negative numbers, then eventually 0.
 *)
-
-let factorial n =
+let imp_factorial n =
   let result = ref 1 in
   for i = 1 to n do
     result := i * !result
