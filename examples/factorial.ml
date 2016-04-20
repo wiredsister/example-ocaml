@@ -16,12 +16,16 @@
   of positive nums your machine can hold. Try factorial 500 for a good time. It will
   hang, and eventually give you 0.
 *)
+
 let tr_factorial n =
+  (* let ( + ) x f = x ^ f in *)
   let rec aux i accum =
     if i > n then accum
     else aux (i + 1) (accum * i)
   in
   aux 1 1
+
+
 
 (**
   NON-TAIL RECURSIVE SOLUTION
@@ -50,8 +54,11 @@ let rec ntr_factorial = function
   to be iterative) you'll notice they have similar behaviors.
   Above 30 you'll see that it will give negative numbers, then eventually 0.
 *)
+
+
 let imp_factorial n =
   let result = ref 1 in
+  let () = print_endline "Hello " in
   for i = 1 to n do
     result := i * !result
   done;

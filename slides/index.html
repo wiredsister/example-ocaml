@@ -67,9 +67,7 @@
       <div class="slides">
 	<section>
 	  <p> OCaml Meetup, San Francisco</p>
-	  <p> Building an OCaml project, workshop on building, structuring your OCaml project </p>
-	  <img height="30%" width="40%" style="margin: 1rem auto 0;
-	  display:block;" src="meetup.jpg"></img>
+	  <p> An Introduction to OCaml </p>
 	  <p>
 	    <small>By <a href="http://twitter.com/edgararout">@edgararout</a></small>
 	  </p>
@@ -96,13 +94,65 @@
 	  </ul>
         </section>
 
+        <section style="font-size:1.4rem;">
+	    <h1> About OCaml </h1>
+	    <ul>
+		<li>Functional Language, of the ML family</li>
+		<li>Immutable by default but
+		    mutability is there and easy to use,
+		    (No IO Monad forced on you) </li>
+		<li> Can be: interpreted, compiled to byte code,
+		    native code, JavaScript, Android, iPhone. </li>
+		<li> Native code is fast!, flambda optimization also just
+		    landed with much optimizations still to reach for </li>
+		<li> Still has objects for when you want that,
+		    most people don't ever use objects. </li>
+		<li> Cool things happening: Multi-core,
+		    MirageOS unikernels,
+		    FaceBook Flow implemented in OCaml </li>
+		<li> Fits a sweet spot of everything you want
+		    a language to be and do.</li>
+	    </ul>
+        </section>
+        <section style="font-size:1.4rem;">
+	    <h1> Getting a grip on the langauge...</h1>
+	    <p> A tail recursive factorial function </p>
+	    <pre>
+		<code class="ocaml">
+let tr_factorial n =
+  let rec aux i accum =
+    if i > n then accum
+    else aux (i + 1) (accum * i)
+  in
+  aux 1 1
+		</code>
+	    </pre>
+	    <p> A tail recursive summing of only the odd elements,
+		notice pattern matching on list. </p>
+	    <pre>
+		<code class="ocaml">
+let tr_sum_odd_elements elements =
+  let rec aux nums accum =
+    match nums with
+    | num::rest ->
+      if num mod 2 = 0
+      then aux rest accum
+      (* notice the last call here is the recursive function *)
+      else aux rest (num + accum)
+    | [] -> accum
+  in
+  aux elements 0
+		</code>
+	    </pre>
+        </section>
+
         <section>
-          <h2> A Simple HTTP Get Request </h2>
+          <h2> More mundane: A HTTP Get Request </h2>
 	  <p>Clone the repository: <a href="https://github.com/wiredsister/example-ocaml">https://github.com/wiredsister/example-ocaml</a></p>
         </section>
 
 	<section>
-	  <p> Open the _oasis file </>
+	  <p> the _oasis file </>
 	   <pre>
 	    <code class="ocaml">
 OASISFormat: 0.4
@@ -140,7 +190,7 @@ let request () =
   	|> Lwt_io.printl
 	
 let () =
-  Lwt_main.run (request ()) |> Lwt.ignore_result
+  Lwt_main.run (request ())
             </code>
           </pre>
 </section>

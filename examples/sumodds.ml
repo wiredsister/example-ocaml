@@ -14,13 +14,19 @@
   Gotchas: you'll notice that if you need to return a List.rev of your accum,
   or somehow cons the elements in reverse, to preserve order.
 *)
+
+class foo = object(self)
+  method speak = print_endline "!23"
+end
+
 let tr_sum_odd_elements elements =
   let rec aux nums accum =
     match nums with
     | num::rest ->
       if num mod 2 = 0
       then aux rest accum
-      else aux rest (num + accum) (* notice the last call here is the recursive function *)
+      (* notice the last call here is the recursive function *)
+      else aux rest (num + accum)
     | [] -> accum
   in
   aux elements 0
