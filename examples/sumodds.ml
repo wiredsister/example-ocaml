@@ -15,10 +15,6 @@
   or somehow cons the elements in reverse, to preserve order.
 *)
 
-class foo = object(self)
-  method speak = print_endline "!23"
-end
-
 let tr_sum_odd_elements elements =
   let rec aux nums accum =
     match nums with
