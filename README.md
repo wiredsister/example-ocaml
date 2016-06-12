@@ -15,4 +15,4 @@ and you should see a pretty-printed JSON response in your console.
 # See Also
 
 If you need help setting up or installing Oasis, Opam, or any other OCaml tooling check out: 
-http://hyegar.com/blog/2015/10/19/so-you're-learning-ocaml/
+<http://hyegar.com/2015/10/20/so-youre-learning-ocaml/>
