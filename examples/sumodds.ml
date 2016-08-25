@@ -70,6 +70,6 @@ let imp_sum_odd_elements elements =
   (*      'a ref -> 'a -> unit *)
     if not (arr.(i) mod 2 = 0) then counter := !counter + arr.(i)
   done;
-  (* Essentially, derefrencing counter *)
+  (* Essentially, dereferencing counter *)
   !counter
 
